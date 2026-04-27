@@ -34,7 +34,7 @@ const tabs = [
         type="radio"
         name={`${id}-tab`}
         id={`${id}-${tab.key}`}
-        class="mc-radio peer/{tab.key} sr-only"
+        class="mc-radio sr-only"
         data-tab={tab.key}
         checked={i === 0}
       />
@@ -59,57 +59,67 @@ const tabs = [
 
   {
     tabs.map((tab) => (
-      <div class="mc-panel grid gap-3 sm:grid-cols-2" data-tab={tab.key} role="tabpanel">
-        <figure class="space-y-2">
-          <div class="aspect-[2/1] overflow-hidden border border-rule bg-rule dark:border-rule-dark dark:bg-rule-dark">
-            <img
-              src={before[tab.key]}
-              alt={`Before — ${tab.label} view`}
-              width="1600"
-              height="800"
-              loading="lazy"
-              decoding="async"
-              class="h-full w-full object-cover"
-            />
+      <div class="mc-panel" data-tab={tab.key} role="tabpanel">
+        <div
+          class="mc-slider border border-rule bg-rule dark:border-rule-dark dark:bg-rule-dark"
+          role="slider"
+          tabindex="0"
+          aria-label={`Drag to compare before and after — ${tab.label} view`}
+          aria-orientation="horizontal"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="50"
+        >
+          <img
+            class="mc-slider-img mc-slider-before"
+            src={before[tab.key]}
+            alt={`Before — ${tab.label} view`}
+            width="1600"
+            height="800"
+            loading="lazy"
+            decoding="async"
+            draggable="false"
+          />
+          <img
+            class="mc-slider-img mc-slider-after"
+            src={after[tab.key]}
+            alt={`After — ${tab.label} view`}
+            width="1600"
+            height="800"
+            loading="lazy"
+            decoding="async"
+            draggable="false"
+          />
+          <span class="mc-slider-tag mc-slider-tag-before" aria-hidden="true">Before</span>
+          <span class="mc-slider-tag mc-slider-tag-after" aria-hidden="true">After</span>
+          <div class="mc-slider-handle" aria-hidden="true">
+            <span class="mc-slider-grip">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 6 3 12 9 18" />
+                <polyline points="15 6 21 12 15 18" />
+              </svg>
+            </span>
           </div>
-          <figcaption class="label">Before</figcaption>
-        </figure>
-        <figure class="space-y-2">
-          <div class="aspect-[2/1] overflow-hidden border border-rule bg-rule dark:border-rule-dark dark:bg-rule-dark">
-            <img
-              src={after[tab.key]}
-              alt={`After — ${tab.label} view`}
-              width="1600"
-              height="800"
-              loading="lazy"
-              decoding="async"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <figcaption class="label">After</figcaption>
-        </figure>
+        </div>
+        <p class="label mt-2">Drag the divider to compare. Arrow keys when focused; Home / End jump to the edges.</p>
       </div>
     ))
   }
 </figure>
 
 <style>
-  /* Hide all panels by default; show the one whose tab radio is checked. */
+  /* --- Tab visibility (CSS-only, driven by hidden radio inputs) --- */
   .map-comparison .mc-panel {
     display: none;
   }
 
-  /* Connect each radio to its matching panel via data-tab attribute.
-     Selector reads: when an input.mc-radio with data-tab="X" is :checked,
-     its later sibling .mc-panel[data-tab="X"] becomes visible. */
   .map-comparison .mc-radio[data-tab='terrain']:checked ~ .mc-panel[data-tab='terrain'],
   .map-comparison .mc-radio[data-tab='satellite']:checked ~ .mc-panel[data-tab='satellite'],
   .map-comparison .mc-radio[data-tab='koppen']:checked ~ .mc-panel[data-tab='koppen'],
   .map-comparison .mc-radio[data-tab='temperature']:checked ~ .mc-panel[data-tab='temperature'] {
-    display: grid;
+    display: block;
   }
 
-  /* Active tab styling: border-bottom on the label whose radio is checked. */
   .map-comparison .mc-tab {
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
@@ -132,7 +142,6 @@ const tabs = [
     }
   }
 
-  /* Keyboard: when the (visually-hidden) radio is focused, ring its sibling label. */
   .map-comparison .mc-radio[data-tab='terrain']:focus-visible ~ [role='tablist'] .mc-tab[data-tab='terrain'],
   .map-comparison .mc-radio[data-tab='satellite']:focus-visible ~ [role='tablist'] .mc-tab[data-tab='satellite'],
   .map-comparison .mc-radio[data-tab='koppen']:focus-visible ~ [role='tablist'] .mc-tab[data-tab='koppen'],
@@ -141,4 +150,137 @@ const tabs = [
     outline-offset: 2px;
     border-radius: 2px;
   }
+
+  /* --- Slider --- */
+  .map-comparison .mc-slider {
+    --slider-pos: 50%;
+    position: relative;
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
+    user-select: none;
+    touch-action: none;
+    cursor: ew-resize;
+  }
+
+  .map-comparison .mc-slider:focus-visible {
+    outline: 2px solid theme('colors.accent.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .map-comparison .mc-slider-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    -webkit-user-drag: none;
+  }
+
+  /* "after" sits on top of "before" and is clipped from the left to slider-pos,
+     so the right portion shows the after state. */
+  .map-comparison .mc-slider-after {
+    clip-path: inset(0 0 0 var(--slider-pos));
+  }
+
+  .map-comparison .mc-slider-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--slider-pos);
+    width: 2px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.65), 0 0 1px rgba(0, 0, 0, 0.9);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .map-comparison .mc-slider-grip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: white;
+    color: theme('colors.ink.DEFAULT');
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .map-comparison .mc-slider-tag {
+    position: absolute;
+    top: 0.5rem;
+    padding: 0.15rem 0.55rem;
+    background: rgba(0, 0, 0, 0.62);
+    color: white;
+    font-family: theme('fontFamily.sans');
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+  .map-comparison .mc-slider-tag-before {
+    left: 0.5rem;
+  }
+  .map-comparison .mc-slider-tag-after {
+    right: 0.5rem;
+  }
 </style>
+
+<script>
+  // Vanilla JS, no framework. Attaches a drag-to-compare slider to each
+  // .map-comparison .mc-slider on the page. Idempotent; safe if called twice.
+  (() => {
+    function attach(el: HTMLElement) {
+      if (el.dataset.sliderReady) return;
+      el.dataset.sliderReady = '1';
+
+      const setPos = (pct: number) => {
+        const clamped = Math.max(0, Math.min(100, pct));
+        el.style.setProperty('--slider-pos', clamped + '%');
+        el.setAttribute('aria-valuenow', String(Math.round(clamped)));
+      };
+
+      const updateFromX = (clientX: number) => {
+        const rect = el.getBoundingClientRect();
+        setPos(((clientX - rect.left) / rect.width) * 100);
+      };
+
+      el.addEventListener('pointerdown', (e: PointerEvent) => {
+        el.setPointerCapture?.(e.pointerId);
+        updateFromX(e.clientX);
+        e.preventDefault();
+      });
+
+      el.addEventListener('pointermove', (e: PointerEvent) => {
+        if (e.buttons === 1) updateFromX(e.clientX);
+      });
+
+      el.addEventListener('keydown', (e: KeyboardEvent) => {
+        const cur = parseFloat(
+          el.style.getPropertyValue('--slider-pos').replace('%', ''),
+        ) || 50;
+        let next = cur;
+        if (e.key === 'ArrowLeft') next = cur - 5;
+        else if (e.key === 'ArrowRight') next = cur + 5;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = 100;
+        else return;
+        e.preventDefault();
+        setPos(next);
+      });
+    }
+
+    document
+      .querySelectorAll<HTMLElement>('.map-comparison .mc-slider')
+      .forEach(attach);
+  })();
+</script>
