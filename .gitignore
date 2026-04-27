@@ -26,5 +26,10 @@ pnpm-debug.log*
 # claude code per-project state
 .claude/
 
+# base heightmaps live here for local edit scripts; never commit the source DEM
+tools/base-heightmap.png
+tools/**/*.tif
+tools/**/*.tiff
+
 # os
 Thumbs.db

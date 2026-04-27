@@ -1,38 +1,57 @@
 ---
-title: 'Mediterranean Desiccated'
-slug: 'mediterranean-dry'
-tagline: 'When the Mediterranean basin was a dry, salt-floored canyon nearly four kilometers deep.'
-era: 'Messinian Salinity Crisis, ~5.96 Ma'
-scenarioType: 'paleo'
-status: 'draft'
+title: "Mediterranean Dry"
+slug: "mediterranean-dry"
+tagline: "What happens to the climate of southern Europe and North Africa when the Mediterranean basin is drained."
+era: "Messinian Salinity Crisis, ~5.96 Ma"
+scenarioType: "paleo"
+status: "published"
 publishedAt: 2026-04-27
-cover: '/scenarios/mediterranean-dry/cover.svg'
-heightmapInput: '/scenarios/mediterranean-dry/heightmap-input.png'
+cover: "/scenarios/mediterranean-dry/cover.png"
+heightmapInput: "/scenarios/mediterranean-dry/heightmap-input.png"
 maps:
   before:
-    terrain: '/scenarios/mediterranean-dry/before-terrain.svg'
-    satellite: '/scenarios/mediterranean-dry/before-satellite.svg'
-    koppen: '/scenarios/mediterranean-dry/before-koppen.svg'
-    temperature: '/scenarios/mediterranean-dry/before-temperature.svg'
+    terrain: "/scenarios/mediterranean-dry/before-terrain.png"
+    satellite: "/scenarios/mediterranean-dry/before-satellite.png"
+    koppen: "/scenarios/mediterranean-dry/before-koppen.png"
+    temperature: "/scenarios/mediterranean-dry/before-temperature.png"
   after:
-    terrain: '/scenarios/mediterranean-dry/after-terrain.svg'
-    satellite: '/scenarios/mediterranean-dry/after-satellite.svg'
-    koppen: '/scenarios/mediterranean-dry/after-koppen.svg'
-    temperature: '/scenarios/mediterranean-dry/after-temperature.svg'
+    terrain: "/scenarios/mediterranean-dry/after-terrain.png"
+    satellite: "/scenarios/mediterranean-dry/after-satellite.png"
+    koppen: "/scenarios/mediterranean-dry/after-koppen.png"
+    temperature: "/scenarios/mediterranean-dry/after-temperature.png"
 sources:
-  - label: 'Hsü et al. (1973) — Late Miocene desiccation of the Mediterranean'
-    url: 'https://doi.org/10.1038/242240a0'
-  - label: 'Krijgsman et al. (1999) — Chronology, causes and progression of the Messinian'
-    url: 'https://doi.org/10.1038/22425'
-  - label: 'Murphy et al. (2009) — Atmospheric modeling of a desiccated Mediterranean'
-    url: 'https://doi.org/10.1029/2008GL036861'
-caveats: "A 4 km basin in the modern climate is a different beast from one in the late Miocene. We hold paleogeography elsewhere fixed; the result is illustrative of what a dry Mediterranean does to *today's* climate, not a Messinian reconstruction."
+  - label: "Hsü et al. (1973), Late Miocene desiccation of the Mediterranean. Nature 242, 240-244"
+    url: "https://doi.org/10.1038/242240a0"
+  - label: "Krijgsman et al. (1999), Chronology, causes and progression of the Messinian salinity crisis. Nature 400, 652-655"
+    url: "https://doi.org/10.1038/23231"
+  - label: "Roveri et al. (2014), The Messinian Salinity Crisis: Past and future of a great challenge for marine sciences. Marine Geology 352, 25-58"
+    url: "https://doi.org/10.1016/j.margeo.2014.02.002"
+  - label: "Natural Earth III - 16-bit DEM (Small), Tom Patterson (public domain)"
+    url: "https://www.shadedrelief.com/natural3/pages/extra.html"
+  - label: "World Orogen by R. Aguilar (browser-based climate model, GPL-3)"
+    url: "https://orogen.studio"
+caveats: |
+  This scenario shows what Orogen's heuristic climate model produces when the Mediterranean basin is rendered as low-elevation land on an otherwise modern Earth. It does not model the actual Messinian Salinity Crisis (different solar luminosity, atmospheric CO2, ice-sheet configuration, and a true basin depth of 3-5 km). Read this as "what would a modern climate look like with that sea drained," not "what the late Miocene actually was." The local response in the basin and its immediate ring (Iberia, Maghreb, Italy, Greece, Anatolia, Levant) is the defensible signal. Far-field changes - Patagonia, the boreal interior, the US East Coast - reflect noise in the model's global wind and pressure solver and should not be over-interpreted.
 ---
 
-[Stub: the Messinian Salinity Crisis at the end of the Miocene closed the Strait of Gibraltar long enough for net evaporation to drain the Mediterranean almost completely. Evaporite deposits up to two kilometers thick on the basin floor are the smoking gun. Cite Hsü 1973 for the original DSDP cores and Krijgsman 1999 for the refined chronology.]
+The Mediterranean is missing.
 
-[Stub: describe the elevation profile. The deepest parts of the modern Mediterranean exceed 5,000 m below sea level. A desiccated basin would have placed the floor several thousand meters below sea level — a hot, hyperarid sink with summer surface temperatures plausibly above 80 °C.]
+Where there was sea, there's now a tan basin running from Gibraltar to the Levant. Iberia tilts drier. Italy and Greece become more North African than European. The Sahara reaches up across the Sicilian Channel like nothing was ever in the way.
 
-[Stub: walk the reader through the maps. The terrain panel shows the dry basin. The Köppen panel will show BWh (hot desert) extending across what is now ocean. Temperature should show a strong heat anomaly, especially in the eastern basin where sinking air would compress adiabatically on its way to the floor.]
+That's what Orogen, a free browser-based climate model, produces when you hand it an Earth heightmap with the Mediterranean basin filled in as low-elevation land. We didn't model the Messinian Salinity Crisis. We did the cheaper thing - asked what a modern climate would do with that particular sea removed - and let the model report back.
 
-[Stub: caveats. The real Messinian climate had a different orbital configuration and a different paleogeography (Gibraltar closed, Tethyan remnants etc.). Our "after" map only desiccates the basin in the modern Earth — it is a thought experiment, not a paleoclimate reconstruction.]
+The actual Messinian, ~5.96 million years ago, was stranger and bigger. The Strait of Gibraltar closed (or repeatedly closed and reopened) and the basin evaporated faster than rivers could replenish it. The floor sat 3-5 km below sea level, an anoxic salt-floored canyon system. Hsü and his *Glomar Challenger* team made the case in 1973 from drill cores. Krijgsman and colleagues nailed down the chronology in 1999. Roveri's group has spent the last decade arguing about whether the desiccation was complete or partial. The geology is settled. The hydrology is still being argued.
+
+What we did is much smaller. We took a Natural Earth III digital elevation model, painted the Med basin as land sitting just above sea level, feathered the edges so the climate model wouldn't see hard discontinuities, and let Orogen run its wind, ocean, precipitation, and Köppen-classification routines twice - once with the modern Med, once with the basin filled.
+
+The local response is the part to trust. The new basin reads as desert. Iberia loses its Mediterranean climate and shifts toward steppe. Italy, the Balkans, Anatolia, and the Levant all slide drier. North Africa intensifies in the same direction it was already going. The Sahel and equatorial Africa barely move - those are ITCZ-driven, and our edit didn't touch the ITCZ. Northern Europe, Scandinavia, and the British Isles also barely change. They're fed from the Atlantic, and Atlantic moisture didn't go anywhere.
+
+The basin itself, in the satellite view, doesn't look like a separate thing. It looks like the Sahara grew north. Which is roughly what the science says it would have looked like - a hot evaporite plain continuous with the existing North African desert system, threaded by hypersaline lakes and the river canyons of the Nile, Rhône, and Po cutting down to whatever was left of the brine pool.
+
+What the model can't tell us. Orogen is heuristic, not a GCM. Its README is honest about this: scientifically informed, not necessarily physically accurate. The wind and precipitation routines are rule-based - good for plausible directional intuition, bad for absolute numbers. We're also not modeling the actual Messinian. Solar luminosity was different. Atmospheric CO₂ was different. The Antarctic ice sheet was differently configured. The basin floor was 3-5 km lower than what we drew, which would have produced surface temperatures Orogen can't easily render.
+
+So read this as "what the modern climate would do with that sea drained" - not "what the late Miocene actually was." The map is doing a thinking job, not a forecasting job.
+
+What this kind of map is good for. Not prediction. Not policy. It's a cheap way to make a counterfactual visible enough to argue about. You can read about the Messinian in a paper, or you can look at a basin where Madrid no longer has the moderating sea to its east and notice what your eye does.
+
+One scenario down.
