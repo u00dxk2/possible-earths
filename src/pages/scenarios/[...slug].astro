@@ -1,0 +1,103 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Prose from '~/components/Prose.astro';
+import MapComparison from '~/components/MapComparison.astro';
+import KoppenLegend from '~/components/KoppenLegend.astro';
+import SourceList from '~/components/SourceList.astro';
+import TryItYourself from '~/components/TryItYourself.astro';
+
+export async function getStaticPaths() {
+  const all = await getCollection('scenarios', (entry) => {
+    return import.meta.env.DEV ? true : entry.data.status === 'published';
+  });
+  return all.map((entry) => ({
+    params: { slug: entry.data.slug ?? entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'scenarios'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const {
+  title,
+  tagline,
+  era,
+  scenarioType,
+  publishedAt,
+  cover,
+  heightmapInput,
+  maps,
+  sources,
+  caveats,
+  status,
+} = entry.data;
+
+const typeLabel = scenarioType.charAt(0).toUpperCase() + scenarioType.slice(1);
+const dateString = publishedAt.toISOString().slice(0, 10);
+---
+
+<BaseLayout title={title} description={tagline} ogImage={cover}>
+  <article>
+    <header class="border-b border-rule dark:border-rule-dark">
+      <div class="wrap-prose py-12 sm:py-16">
+        <div class="mb-4 flex flex-wrap items-center gap-3">
+          <span class="label text-accent dark:text-accent-dark">{typeLabel}</span>
+          <span class="label">·</span>
+          <span class="label">{era}</span>
+          {
+            status === 'draft' && (
+              <>
+                <span class="label">·</span>
+                <span class="label rounded border border-rule px-1.5 py-0.5 dark:border-rule-dark">
+                  Draft
+                </span>
+              </>
+            )
+          }
+        </div>
+        <h1 class="font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-ink dark:text-ink-dark sm:text-5xl">
+          {title}
+        </h1>
+        <p class="mt-4 font-serif text-xl leading-snug text-ink-muted dark:text-ink-muted-dark">
+          {tagline}
+        </p>
+        <p class="mt-6 font-sans text-xs text-ink-muted dark:text-ink-muted-dark">
+          <time datetime={dateString}>{dateString}</time>
+        </p>
+      </div>
+    </header>
+
+    <section class="border-b border-rule dark:border-rule-dark bg-bg dark:bg-bg-dark">
+      <div class="wrap py-12">
+        <MapComparison before={maps.before} after={maps.after} title="Before / After" />
+        <div class="mt-6">
+          <KoppenLegend />
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap-prose py-12 sm:py-16">
+      <Prose>
+        <Content />
+      </Prose>
+
+      {
+        caveats && (
+          <aside class="not-prose mt-10 border-l-2 border-accent bg-accent/[0.03] py-3 pl-5 pr-4 font-sans text-sm leading-relaxed text-ink-muted dark:border-accent-dark dark:bg-accent-dark/[0.05] dark:text-ink-muted-dark">
+            <p class="label mb-1 text-accent dark:text-accent-dark">Caveats</p>
+            <p>{caveats}</p>
+          </aside>
+        )
+      }
+
+      <TryItYourself heightmapInput={heightmapInput} scenarioTitle={title} />
+
+      <SourceList sources={sources} />
+    </section>
+  </article>
+</BaseLayout>

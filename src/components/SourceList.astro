@@ -1,0 +1,39 @@
+---
+interface Source {
+  label: string;
+  url: string;
+}
+interface Props {
+  sources: Source[];
+}
+const { sources } = Astro.props;
+---
+
+{
+  sources.length > 0 && (
+    <section aria-labelledby="sources-heading" class="not-prose mt-12 border-t border-rule pt-6 dark:border-rule-dark">
+      <h2 id="sources-heading" class="label mb-3">
+        Sources
+      </h2>
+      <ol class="space-y-2 font-sans text-sm">
+        {sources.map((source, i) => (
+          <li class="flex gap-3">
+            <span
+              class="flex-shrink-0 font-mono text-xs tabular-nums text-ink-muted dark:text-ink-muted-dark"
+              aria-hidden="true"
+            >
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <a
+              href={source.url}
+              rel="noopener"
+              class="text-ink underline-offset-2 hover:underline dark:text-ink-dark"
+            >
+              {source.label}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}

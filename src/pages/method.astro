@@ -1,0 +1,108 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Prose from '~/components/Prose.astro';
+---
+
+<BaseLayout
+  title="Method"
+  description="How a Possible Earths scenario is produced, step by step: heightmap, edit, Orogen, export, publish."
+>
+  <section class="wrap-prose py-12 sm:py-16">
+    <p class="label mb-3">Method</p>
+    <h1 class="mb-8 font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-ink dark:text-ink-dark sm:text-5xl">
+      How a scenario is made
+    </h1>
+
+    <Prose>
+      <p>
+        Every scenario follows the same pipeline. There is no automation: each step is a human
+        decision so the final maps stay legible and the counterfactual stays clearly intentional.
+      </p>
+
+      <h2>1. Acquire a base heightmap</h2>
+      <p>
+        Pull a 2:1 equirectangular global elevation PNG from a public DEM. We typically use{' '}
+        <a href="https://www.earthdata.nasa.gov/data/instruments/srtm" rel="noopener">NASA SRTM</a>{' '}
+        or the{' '}
+        <a
+          href="https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model"
+          rel="noopener"
+        >Copernicus GLO-30 DEM</a
+        >, downsampled to the resolution Orogen accepts (Orogen samples internally; 2048×1024 or
+        4096×2048 PNGs work well). The source DEM is not committed to this repo — links to the
+        source are recorded in each scenario's frontmatter.
+      </p>
+
+      <h2>2. Express the counterfactual</h2>
+      <p>
+        Open the heightmap in GIMP (or via Python/PIL for programmatic edits). Edit only what the
+        scenario calls for. Save as a 2:1 equirectangular grayscale PNG. A few practices that have
+        helped:
+      </p>
+      <ul>
+        <li>Work non-destructively — keep a layer for the unmodified DEM you can toggle back on.</li>
+        <li>
+          Soften every edge with at least 30–60 px of Gaussian blur. Orogen's climate model
+          responds to gradients; a hard edit produces visibly synthetic Köppen banding.
+        </li>
+        <li>
+          Stay in 8-bit grayscale when exporting. Orogen's import treats the PNG as a single
+          luminance channel.
+        </li>
+      </ul>
+
+      <h2>3. Import into Orogen</h2>
+      <p>
+        Open <a href="https://orogen.studio/import" rel="noopener">orogen.studio/import</a> in a
+        modern desktop browser (we test on Chrome and Firefox). Drop the PNG in. Orogen treats it as
+        an elevation map, builds a sphere mesh, and runs ocean/land detection.
+      </p>
+
+      <h2>4. Run climate</h2>
+      <p>
+        Click <em>Run climate</em> and wait for it to settle. Optionally tweak the temperature
+        offset and precipitation multiplier sliders to bracket the scenario — for paleo scenarios we
+        target the temperature offset implied by the literature (e.g., +1–2 °C global mean for the
+        mid-Holocene).
+      </p>
+
+      <h2>5. Export the four views</h2>
+      <p>
+        Use <em>Export All</em> to save satellite, Köppen, the heightmap roundtrip, and the land
+        mask in one shot. For terrain-only and temperature views, switch the <em>Inspect</em>{' '}
+        dropdown and re-export individually. You should end up with eight files per scenario: four
+        views × <em>before</em> (the unedited heightmap) and <em>after</em> (the modified one).
+      </p>
+
+      <h2>6. Drop the files in</h2>
+      <p>
+        Save into <code>public/scenarios/&lt;slug&gt;/</code> using these exact filenames:
+      </p>
+      <pre><code>cover.svg                      (or .png/.jpg)
+heightmap-input.png
+before-terrain.png
+before-satellite.png
+before-koppen.png
+before-temperature.png
+after-terrain.png
+after-satellite.png
+after-koppen.png
+after-temperature.png</code></pre>
+
+      <h2>7. Write the essay</h2>
+      <p>
+        Create or edit <code>src/content/scenarios/&lt;slug&gt;.mdx</code>. Frontmatter is
+        type-checked against the Zod schema in <code>src/content/config.ts</code>; the essay body is
+        plain MDX. Keep it short (300–800 words). Cite at least two primary sources in the{' '}
+        <code>sources</code> array.
+      </p>
+
+      <h2>8. Publish</h2>
+      <p>
+        Set <code>status: 'published'</code>, run <code>npm run build</code> locally to confirm a
+        clean build, then commit and push. Render auto-deploys from <code>main</code>. PR previews
+        are enabled for any branch with an open pull request.
+      </p>
+    </Prose>
+  </section>
+</BaseLayout>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" width="1600" height="800" role="img" aria-label="Alps Flattened — cover (placeholder)">
+  <defs>
+    <linearGradient id="cover-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D6CDB8"/>
+      <stop offset="100%" stop-color="#7A6F58"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="800" fill="url(#cover-grad)"/>
+  <g font-family="Source Serif 4, Georgia, serif" fill="#3F362A">
+    <text x="80" y="420" font-size="96" font-weight="600">Alps Flattened</text>
+    <text x="80" y="490" font-size="32" font-weight="400" opacity="0.7">Possible Earths — placeholder cover</text>
+  </g>
+</svg>

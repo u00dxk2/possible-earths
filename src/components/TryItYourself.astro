@@ -1,0 +1,63 @@
+---
+interface Props {
+  heightmapInput: string;
+  scenarioTitle: string;
+}
+const { heightmapInput, scenarioTitle } = Astro.props;
+const filename = heightmapInput.split('/').pop() ?? 'heightmap.png';
+---
+
+<aside
+  aria-labelledby="try-it-heading"
+  class="not-prose mt-12 border border-accent/40 bg-accent/[0.04] p-6 dark:border-accent-dark/40 dark:bg-accent-dark/[0.06]"
+>
+  <h2 id="try-it-heading" class="label mb-1 text-accent dark:text-accent-dark">Try it yourself</h2>
+  <p class="mb-4 font-serif text-base leading-snug text-ink dark:text-ink-dark">
+    Download the modified heightmap for <em>{scenarioTitle}</em> and re-run it through Orogen.
+    Tweak temperature and precipitation sliders to see how robust the climate response is.
+  </p>
+
+  <ol class="space-y-3 font-sans text-sm text-ink dark:text-ink-dark">
+    <li class="flex gap-3">
+      <span class="font-mono text-xs tabular-nums text-ink-muted dark:text-ink-muted-dark">01</span>
+      <span>
+        Download the heightmap:{' '}
+        <a
+          href={heightmapInput}
+          download={filename}
+          class="text-accent underline underline-offset-2 dark:text-accent-dark"
+        >
+          {filename}
+        </a>
+      </span>
+    </li>
+    <li class="flex gap-3">
+      <span class="font-mono text-xs tabular-nums text-ink-muted dark:text-ink-muted-dark">02</span>
+      <span>
+        Open{' '}
+        <a
+          href="https://orogen.studio/import"
+          rel="noopener"
+          class="text-accent underline underline-offset-2 dark:text-accent-dark"
+        >
+          orogen.studio/import
+        </a>{' '}
+        and upload the PNG. Orogen treats it as a 2:1 equirectangular elevation map.
+      </span>
+    </li>
+    <li class="flex gap-3">
+      <span class="font-mono text-xs tabular-nums text-ink-muted dark:text-ink-muted-dark">03</span>
+      <span>
+        Run the climate model. Optionally adjust the temperature offset and precipitation multiplier
+        sliders to explore the counterfactual's sensitivity.
+      </span>
+    </li>
+    <li class="flex gap-3">
+      <span class="font-mono text-xs tabular-nums text-ink-muted dark:text-ink-muted-dark">04</span>
+      <span>
+        Use <em>Export All</em> for satellite, Köppen, heightmap, and land mask. For terrain-only
+        and temperature views, switch via the <em>Inspect</em> dropdown and re-export.
+      </span>
+    </li>
+  </ol>
+</aside>

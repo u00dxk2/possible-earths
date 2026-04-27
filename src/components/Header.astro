@@ -1,0 +1,42 @@
+---
+const navItems = [
+  { href: '/', label: 'Scenarios' },
+  { href: '/method', label: 'Method' },
+  { href: '/about', label: 'About' },
+];
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="border-b border-rule dark:border-rule-dark">
+  <div class="wrap flex items-center justify-between py-5">
+    <a href="/" class="wordmark text-ink dark:text-ink-dark" aria-label="Possible Earths home">
+      Possible&nbsp;Earths
+    </a>
+    <nav aria-label="Primary">
+      <ul class="flex items-center gap-6 font-sans text-sm">
+        {
+          navItems.map((item) => {
+            const active =
+              item.href === '/' ? path === '/' : path === item.href || path.startsWith(item.href + '/');
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  class:list={[
+                    'inline-block py-2 transition-colors hover:text-accent dark:hover:text-accent-dark',
+                    active
+                      ? 'text-accent dark:text-accent-dark'
+                      : 'text-ink-muted dark:text-ink-muted-dark',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

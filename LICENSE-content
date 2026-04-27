@@ -1,0 +1,31 @@
+Content License — Possible Earths
+
+The essays in src/content/ and the original images, illustrations, and
+generated map exports in public/scenarios/ are licensed under the
+Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+You are free to:
+  - Share — copy and redistribute the material in any medium or format
+  - Adapt — remix, transform, and build upon the material for any purpose,
+            even commercially.
+
+Under the following terms:
+  - Attribution — You must give appropriate credit (e.g., "Possible Earths,
+    https://possible-earths.onrender.com"), provide a link to this license,
+    and indicate if changes were made. You may do so in any reasonable
+    manner, but not in any way that suggests the licensor endorses you or
+    your use.
+
+The full legal text of CC BY 4.0 is at:
+  https://creativecommons.org/licenses/by/4.0/legalcode
+
+Notes:
+  - The site code in src/ (excluding src/content/), configuration files, and
+    scripts/ are licensed under MIT instead — see LICENSE.
+  - The "before" map exports are derivative works of the source DEM used
+    (e.g., NASA SRTM, Copernicus DEM); the modified "after" heightmaps are
+    in turn derivatives of those. They inherit their source DEM's license,
+    which is identified in each scenario's frontmatter sources array.
+  - World Orogen, the tool used to render the climate maps, is GPL-3.
+    We do not vendor or distribute Orogen code; we run it in a browser via
+    orogen.studio and host its rendered exports here.

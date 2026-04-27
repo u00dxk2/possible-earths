@@ -1,0 +1,92 @@
+---
+// Source of truth: js/koppen.js in raguilar011095/planet_heightmap_generation (GPL-3).
+// Kept verbatim so our legend matches what Orogen exports.
+const groups = [
+  {
+    title: 'A · Tropical',
+    classes: [
+      { code: 'Af', name: 'Tropical rainforest', hex: '#0000FF' },
+      { code: 'Am', name: 'Tropical monsoon', hex: '#0077FF' },
+      { code: 'Aw', name: 'Tropical savanna', hex: '#46AAFA' },
+    ],
+  },
+  {
+    title: 'B · Arid',
+    classes: [
+      { code: 'BWh', name: 'Hot desert', hex: '#FF0000' },
+      { code: 'BWk', name: 'Cold desert', hex: '#FF9696' },
+      { code: 'BSh', name: 'Hot steppe', hex: '#F5A500' },
+      { code: 'BSk', name: 'Cold steppe', hex: '#FFDB63' },
+    ],
+  },
+  {
+    title: 'C · Temperate',
+    classes: [
+      { code: 'Csa', name: 'Hot-summer Mediterranean', hex: '#FFFF00' },
+      { code: 'Csb', name: 'Warm-summer Mediterranean', hex: '#C8C800' },
+      { code: 'Csc', name: 'Cold-summer Mediterranean', hex: '#969600' },
+      { code: 'Cwa', name: 'Humid subtropical (monsoon)', hex: '#96FF96' },
+      { code: 'Cwb', name: 'Subtropical highland', hex: '#63C764' },
+      { code: 'Cwc', name: 'Cold subtropical highland', hex: '#329633' },
+      { code: 'Cfa', name: 'Humid subtropical', hex: '#C8FF50' },
+      { code: 'Cfb', name: 'Oceanic', hex: '#64FF50' },
+      { code: 'Cfc', name: 'Subpolar oceanic', hex: '#32C800' },
+    ],
+  },
+  {
+    title: 'D · Continental',
+    classes: [
+      { code: 'Dsa', name: 'Hot-summer continental (dry summer)', hex: '#E680FF' },
+      { code: 'Dsb', name: 'Warm-summer continental (dry summer)', hex: '#B359D9' },
+      { code: 'Dsc', name: 'Subarctic (dry summer)', hex: '#8033A6' },
+      { code: 'Dsd', name: 'Extremely cold subarctic (dry summer)', hex: '#591A73' },
+      { code: 'Dwa', name: 'Hot-summer continental (monsoon)', hex: '#ABB1FF' },
+      { code: 'Dwb', name: 'Warm-summer continental (monsoon)', hex: '#6E77C8' },
+      { code: 'Dwc', name: 'Subarctic (monsoon)', hex: '#4A50C8' },
+      { code: 'Dwd', name: 'Extremely cold subarctic (monsoon)', hex: '#320087' },
+      { code: 'Dfa', name: 'Hot-summer continental', hex: '#00FFFF' },
+      { code: 'Dfb', name: 'Warm-summer continental', hex: '#37C8FF' },
+      { code: 'Dfc', name: 'Subarctic', hex: '#007D7D' },
+      { code: 'Dfd', name: 'Extremely cold subarctic', hex: '#00465F' },
+    ],
+  },
+  {
+    title: 'E · Polar',
+    classes: [
+      { code: 'ET', name: 'Tundra', hex: '#B2B2B2' },
+      { code: 'EF', name: 'Ice cap', hex: '#686868' },
+    ],
+  },
+];
+---
+
+<details class="koppen-legend not-prose border border-rule dark:border-rule-dark">
+  <summary class="label flex cursor-pointer items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-rule/40 dark:hover:bg-rule-dark/40">
+    <span>Köppen-Geiger climate legend (30 classes)</span>
+    <span class="text-ink-muted dark:text-ink-muted-dark" aria-hidden="true">▾</span>
+  </summary>
+  <div class="grid gap-6 px-4 pb-4 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      groups.map((group) => (
+        <div>
+          <h3 class="label mb-2">{group.title}</h3>
+          <ul class="space-y-1.5">
+            {group.classes.map((c) => (
+              <li class="flex items-center gap-2 font-sans text-xs">
+                <span
+                  class="inline-block h-4 w-4 flex-shrink-0 border border-rule dark:border-rule-dark"
+                  style={`background-color: ${c.hex}`}
+                  aria-hidden="true"
+                />
+                <span class="font-mono text-[0.7rem] tabular-nums text-ink-muted dark:text-ink-muted-dark">
+                  {c.code}
+                </span>
+                <span class="text-ink dark:text-ink-dark">{c.name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</details>

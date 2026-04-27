@@ -1,0 +1,144 @@
+---
+interface MapSet {
+  terrain: string;
+  satellite: string;
+  koppen: string;
+  temperature: string;
+}
+
+interface Props {
+  before: MapSet;
+  after: MapSet;
+  title?: string;
+}
+
+const { before, after, title } = Astro.props;
+
+// Unique id to scope radio names per instance (allows multiple comparisons on a page).
+const id = `mc-${Math.random().toString(36).slice(2, 9)}`;
+
+const tabs = [
+  { key: 'terrain', label: 'Terrain' },
+  { key: 'satellite', label: 'Satellite' },
+  { key: 'koppen', label: 'Köppen' },
+  { key: 'temperature', label: 'Temperature' },
+] as const;
+---
+
+<figure class="map-comparison" data-id={id}>
+  {title && <figcaption class="label mb-3">{title}</figcaption>}
+
+  {
+    tabs.map((tab, i) => (
+      <input
+        type="radio"
+        name={`${id}-tab`}
+        id={`${id}-${tab.key}`}
+        class="mc-radio peer/{tab.key} sr-only"
+        data-tab={tab.key}
+        checked={i === 0}
+      />
+    ))
+  }
+
+  <div role="tablist" aria-label="Map view" class="mb-3 flex flex-wrap gap-1 border-b border-rule dark:border-rule-dark">
+    {
+      tabs.map((tab) => (
+        <label
+          for={`${id}-${tab.key}`}
+          data-tab={tab.key}
+          class="mc-tab cursor-pointer px-3 py-2 font-sans text-sm text-ink-muted transition-colors hover:text-ink dark:text-ink-muted-dark dark:hover:text-ink-dark"
+          tabindex="0"
+          role="tab"
+        >
+          {tab.label}
+        </label>
+      ))
+    }
+  </div>
+
+  {
+    tabs.map((tab) => (
+      <div class="mc-panel grid gap-3 sm:grid-cols-2" data-tab={tab.key} role="tabpanel">
+        <figure class="space-y-2">
+          <div class="aspect-[2/1] overflow-hidden border border-rule bg-rule dark:border-rule-dark dark:bg-rule-dark">
+            <img
+              src={before[tab.key]}
+              alt={`Before — ${tab.label} view`}
+              width="1600"
+              height="800"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <figcaption class="label">Before</figcaption>
+        </figure>
+        <figure class="space-y-2">
+          <div class="aspect-[2/1] overflow-hidden border border-rule bg-rule dark:border-rule-dark dark:bg-rule-dark">
+            <img
+              src={after[tab.key]}
+              alt={`After — ${tab.label} view`}
+              width="1600"
+              height="800"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <figcaption class="label">After</figcaption>
+        </figure>
+      </div>
+    ))
+  }
+</figure>
+
+<style>
+  /* Hide all panels by default; show the one whose tab radio is checked. */
+  .map-comparison .mc-panel {
+    display: none;
+  }
+
+  /* Connect each radio to its matching panel via data-tab attribute.
+     Selector reads: when an input.mc-radio with data-tab="X" is :checked,
+     its later sibling .mc-panel[data-tab="X"] becomes visible. */
+  .map-comparison .mc-radio[data-tab='terrain']:checked ~ .mc-panel[data-tab='terrain'],
+  .map-comparison .mc-radio[data-tab='satellite']:checked ~ .mc-panel[data-tab='satellite'],
+  .map-comparison .mc-radio[data-tab='koppen']:checked ~ .mc-panel[data-tab='koppen'],
+  .map-comparison .mc-radio[data-tab='temperature']:checked ~ .mc-panel[data-tab='temperature'] {
+    display: grid;
+  }
+
+  /* Active tab styling: border-bottom on the label whose radio is checked. */
+  .map-comparison .mc-tab {
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .map-comparison .mc-radio[data-tab='terrain']:checked ~ [role='tablist'] .mc-tab[data-tab='terrain'],
+  .map-comparison .mc-radio[data-tab='satellite']:checked ~ [role='tablist'] .mc-tab[data-tab='satellite'],
+  .map-comparison .mc-radio[data-tab='koppen']:checked ~ [role='tablist'] .mc-tab[data-tab='koppen'],
+  .map-comparison .mc-radio[data-tab='temperature']:checked ~ [role='tablist'] .mc-tab[data-tab='temperature'] {
+    border-bottom-color: theme('colors.accent.DEFAULT');
+    color: theme('colors.ink.DEFAULT');
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .map-comparison .mc-radio[data-tab='terrain']:checked ~ [role='tablist'] .mc-tab[data-tab='terrain'],
+    .map-comparison .mc-radio[data-tab='satellite']:checked ~ [role='tablist'] .mc-tab[data-tab='satellite'],
+    .map-comparison .mc-radio[data-tab='koppen']:checked ~ [role='tablist'] .mc-tab[data-tab='koppen'],
+    .map-comparison .mc-radio[data-tab='temperature']:checked ~ [role='tablist'] .mc-tab[data-tab='temperature'] {
+      border-bottom-color: theme('colors.accent.dark');
+      color: theme('colors.ink.dark');
+    }
+  }
+
+  /* Keyboard: when the (visually-hidden) radio is focused, ring its sibling label. */
+  .map-comparison .mc-radio[data-tab='terrain']:focus-visible ~ [role='tablist'] .mc-tab[data-tab='terrain'],
+  .map-comparison .mc-radio[data-tab='satellite']:focus-visible ~ [role='tablist'] .mc-tab[data-tab='satellite'],
+  .map-comparison .mc-radio[data-tab='koppen']:focus-visible ~ [role='tablist'] .mc-tab[data-tab='koppen'],
+  .map-comparison .mc-radio[data-tab='temperature']:focus-visible ~ [role='tablist'] .mc-tab[data-tab='temperature'] {
+    outline: 2px solid theme('colors.accent.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+</style>

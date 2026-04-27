@@ -1,0 +1,88 @@
+@import '@fontsource-variable/source-serif-4/index.css';
+@import '@fontsource-variable/inter/index.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+    }
+  }
+
+  html {
+    @apply font-serif text-ink;
+    background-color: theme('colors.bg.DEFAULT');
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html {
+      @apply text-ink-dark;
+      background-color: theme('colors.bg.dark');
+    }
+  }
+
+  body {
+    @apply min-h-screen;
+  }
+
+  /* Visible, restrained focus ring on every focusable element */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-bg;
+    border-radius: 2px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    *:focus-visible {
+      @apply ring-accent-dark ring-offset-bg-dark;
+    }
+  }
+
+  ::selection {
+    background-color: theme('colors.accent.DEFAULT');
+    color: theme('colors.bg.DEFAULT');
+  }
+
+  hr {
+    @apply border-rule;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    hr {
+      @apply border-rule-dark;
+    }
+  }
+}
+
+@layer components {
+  .label {
+    @apply font-sans text-xs uppercase tracking-[0.14em] text-ink-muted;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .label {
+      @apply text-ink-muted-dark;
+    }
+  }
+
+  .wordmark {
+    @apply font-serif text-xl font-semibold tracking-tight;
+    font-feature-settings: 'liga' 1, 'kern' 1;
+  }
+
+  .wrap {
+    @apply mx-auto w-full max-w-comparison px-5 sm:px-8;
+  }
+
+  .wrap-prose {
+    @apply mx-auto w-full max-w-prose px-5 sm:px-8;
+  }
+}

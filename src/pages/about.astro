@@ -1,0 +1,90 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Prose from '~/components/Prose.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="What Possible Earths is, what it isn't, and the tools and people behind it."
+>
+  <section class="wrap-prose py-12 sm:py-16">
+    <p class="label mb-3">About</p>
+    <h1 class="mb-8 font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-ink dark:text-ink-dark sm:text-5xl">
+      Possible Earths
+    </h1>
+
+    <Prose>
+      <p>
+        <em>Possible Earths</em> is a small editorial gallery of counterfactual-geography scenarios.
+        For each one, we move some piece of the planet — a desert, an ocean basin, a mountain range —
+        and look at what changes when the climate model is allowed to respond.
+      </p>
+
+      <h2>The tool</h2>
+      <p>
+        The maps come from <a href="https://orogen.studio" rel="noopener">World Orogen</a>, a
+        browser-based procedural planet generator by R. Aguilar (GPL-3,{' '}
+        <a
+          href="https://github.com/raguilar011095/planet_heightmap_generation"
+          rel="noopener">source on GitHub</a
+        >). Orogen accepts a 2:1 equirectangular elevation PNG, runs tectonic, ocean, wind, and
+        climate simulations on it, and exports satellite, Köppen, and temperature views. We pre-render
+        the maps and host them here. Orogen is the tool — this site is just a gallery of its outputs.
+      </p>
+
+      <h2>What this is</h2>
+      <ul>
+        <li>Short essays paired with before-and-after maps in four views.</li>
+        <li>A consistent Köppen-Geiger legend so the climate maps are readable across scenarios.</li>
+        <li>Downloadable input heightmaps so you can rerun any scenario yourself.</li>
+        <li>Privacy-first: no analytics, no cookies, no third-party scripts.</li>
+      </ul>
+
+      <h2>What this is not</h2>
+      <ul>
+        <li>
+          <strong>A research tool.</strong> Orogen's own framing is the right one: the model is
+          <em>scientifically informed, not necessarily physically accurate</em>. It uses heuristic
+          climate physics, not a GCM.
+        </li>
+        <li>
+          <strong>A source of climate projections.</strong> For actual projections of future Earth
+          climate, see the{' '}
+          <a href="https://cds.climate.copernicus.eu/" rel="noopener">Copernicus Climate Data Store</a
+          >{' '}and{' '}
+          <a href="https://wcrp-cmip.org/cmip-overview/" rel="noopener">CMIP6</a>.
+        </li>
+        <li>
+          <strong>A peer-reviewed paleoclimate reconstruction.</strong> Where we visualize a past
+          configuration like the African Humid Period or the Messinian, we cite the underlying
+          paleoclimate literature — the <em>maps</em> are an Orogen rendering of that literature, not
+          a substitute for it.
+        </li>
+      </ul>
+
+      <h2>Credits</h2>
+      <ul>
+        <li>
+          <strong>R. Aguilar</strong> — World Orogen ({' '}
+          <a href="https://orogen.studio" rel="noopener">orogen.studio</a>, GPL-3). Without it, none
+          of this works.
+        </li>
+        <li>
+          <strong>Red Blob Games</strong> — the procedural-mapgen articles whose algorithms inform
+          Orogen upstream. <a href="https://www.redblobgames.com/" rel="noopener">redblobgames.com</a
+          >.
+        </li>
+        <li>
+          <strong>NASA SRTM</strong> and <strong>Copernicus DEM</strong> — sources for the base
+          equirectangular Earth heightmap when a real-Earth comparison is involved.
+        </li>
+      </ul>
+
+      <h2>License</h2>
+      <p>
+        Site code is MIT. Essays and original images are CC BY 4.0. Modified heightmaps are
+        derivatives of whatever source DEM was used and inherit that source's license.
+      </p>
+    </Prose>
+  </section>
+</BaseLayout>

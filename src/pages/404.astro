@@ -1,0 +1,24 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Not found"
+  description="That page doesn't exist on Possible Earths."
+>
+  <section class="wrap-prose py-24 text-center sm:py-32">
+    <p class="label mb-4">404</p>
+    <h1 class="mb-4 font-serif text-4xl font-semibold tracking-tight text-ink dark:text-ink-dark sm:text-5xl">
+      Off the map
+    </h1>
+    <p class="mb-8 font-serif text-lg text-ink-muted dark:text-ink-muted-dark">
+      That page doesn't exist on this Earth.
+    </p>
+    <a
+      href="/"
+      class="inline-block border border-accent px-5 py-2 font-sans text-sm text-accent transition-colors hover:bg-accent hover:text-bg dark:border-accent-dark dark:text-accent-dark dark:hover:bg-accent-dark dark:hover:text-bg-dark"
+    >
+      Back to scenarios
+    </a>
+  </section>
+</BaseLayout>
