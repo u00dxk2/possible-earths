@@ -3,7 +3,7 @@ interface MapSet {
   terrain: string;
   satellite: string;
   koppen: string;
-  temperature: string;
+  temperature?: string;
 }
 
 interface Props {
@@ -17,12 +17,18 @@ const { before, after, title } = Astro.props;
 // Unique id to scope radio names per instance (allows multiple comparisons on a page).
 const id = `mc-${Math.random().toString(36).slice(2, 9)}`;
 
-const tabs = [
+// Render a tab only when both before and after have an asset for it.
+// Lets scenarios opt out of (e.g.) temperature when the data is too noisy
+// to ship — see Mediterranean Dry, where Voronoi mesh randomization across
+// Orogen imports contaminated the temperature signal.
+const ALL_TABS = [
   { key: 'terrain', label: 'Terrain' },
   { key: 'satellite', label: 'Satellite' },
   { key: 'koppen', label: 'Köppen' },
   { key: 'temperature', label: 'Temperature' },
 ] as const;
+
+const tabs = ALL_TABS.filter((t) => before[t.key] && after[t.key]);
 ---
 
 <figure class="map-comparison" data-id={id}>

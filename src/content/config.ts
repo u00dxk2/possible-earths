@@ -4,7 +4,7 @@ const mapSet = z.object({
   terrain: z.string(),
   satellite: z.string(),
   koppen: z.string(),
-  temperature: z.string(),
+  temperature: z.string().optional(),
 });
 
 const scenarios = defineCollection({
